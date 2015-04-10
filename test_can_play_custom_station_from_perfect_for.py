@@ -1,4 +1,3 @@
-
 import unittest
 from appium import webdriver
 from hamcrest import *
@@ -23,28 +22,53 @@ class PlayCustomStationFromPerfect(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    # def explicitly_wait(self, locator):
-    #     return WebDriverWait(self.driver, 10).until()
-
     def test_login_with_existing_user(self):
         self.driver.find_element_by_name('Have an account? Log In').click()
 
         # input email address
-        self.driver.find_element_by_xpath("//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextField[1]").send_keys('iheartmediatester@gmail.com')
+        self.driver.find_element_by_xpath(
+            "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[1]/UIATextField[1]").send_keys(
+            'iheartmediatester@gmail.com')
 
         # input password
         # TODO super dumb workaround
-        self.driver.execute_script("mobile: tap", {"tapCount": 1, "touchCount": 1, "duration": 0.6, "x": 150, "y": 153 })
-        self.driver.find_element_by_xpath("//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIASecureTextField[1]").send_keys('things')
+        self.driver.execute_script("mobile: tap", {"tapCount": 1, "touchCount": 1, "duration": 0.6, "x": 150, "y": 153})
+        self.driver.find_element_by_xpath(
+            "//UIAApplication[1]/UIAWindow[1]/UIATableView[1]/UIATableCell[2]/UIASecureTextField[1]").send_keys(
+            'things')
 
         # submit the form
         self.driver.find_element_by_xpath("//UIAApplication[1]/UIAWindow[1]/UIAButton[1]").click()
 
-        el = self.driver.find_element_by_name('Country')
-        assert_that(el.is_enabled())
+        self.driver.find_element_by_name("No Thanks").click()
 
-    def test_ability_to_play_custom_station_from_perfect_or(self):
-        pass
+        self.driver.find_element_by_name('Country').click()
+
+        self.driver.find_element_by_name('Done').click()
+
+        self.driver.find_element_by_name('Perfect For').click()
+
+        # precise click the first station (possibly dynamic ordering)
+        self.driver.execute_script("mobile: tap",
+                                   {
+                                       "tapCount": 1,
+                                       "touchCount": 1,
+                                       "duration": 0.6,
+                                       "x": 134,
+                                       "y": 223
+                                   })
+        # another precise click first station (dynamic ordering)
+        self.driver.execute_script("mobile: tap",
+                                   {
+                                       "tapCount": 1,
+                                       "touchCount": 1,
+                                       "duration": 0.59,
+                                       "x": 108,
+                                       "y": 133
+                                   })
+        # time.sleep(10)
+        # need to figure out how to interact with the player
+
 
 
 if __name__ == '__main__':
